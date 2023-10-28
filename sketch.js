@@ -1,11 +1,20 @@
 let wiese
+let wueste
+let waldUpscaled
+let wald
 
 function setup() {
   wiese = loadImage("klimathon-wiese-upscale.png");
-  createCanvas(400, 400);
+  wueste = loadImage("klimathon-wueste.png");
+  waldUpscaled = loadImage("klimathon-wald-upscaled.png")
+  wald = loadImage("klimathon-wald.png")
+  createCanvas(window.innerWidth, window.innerHeight);
 }
 
 function draw() {
-  background(100);
-  image(wiese, 10, 10)
+  image(wald, mouseX-10, mouseY-10)
+  if(mouseIsPressed) {
+    image(waldUpscaled, mouseX-80, mouseY-80, 160, 160)
+    image(wueste, mouseX-10, mouseY-10, 80, 80)
+  }
 }
