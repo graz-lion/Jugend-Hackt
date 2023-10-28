@@ -8,6 +8,7 @@ let Wiese;
 let menueopen = false;
 let wiese;
 let solar;
+let wald;
 
 function setup() {
   createCanvas(sizex * tilesize, sizey * tilesize + 40);
@@ -17,6 +18,7 @@ function setup() {
 
   wiese = new map_tile("Wiese", loadImage("Wiese.png"));
   solar = new map_tile("Solarkraftwerk", loadImage("Solar.png"));
+  wald = new map_tile("Wald", loadImage("Wald.png"));
   
 
   Select = loadImage("Select.png");
@@ -25,7 +27,12 @@ function setup() {
 
   for (let y = 0; y < sizey; y++) {
     for (let x = 0; x < sizex; x++) {
-      map.push(wiese);
+    let noiseScale = 0.2;
+    if (noise(x * noiseScale, y * noiseScale) > 0.5) {
+    map.push(wald);	
+    } else {
+    map.push(wiese);	
+    }   
     }
   }
 }
@@ -48,6 +55,8 @@ if (menueopen === false) {
     x = parseInt(mouseX / tilesize);
     y = parseInt(mouseY / tilesize);
     image(Select, x * tilesize, y * tilesize, tilesize, tilesize);
+    text(map[x + y * sizex].name, 10, sizey * tilesize + 20);
+    
     if (mouseIsPressed) {
     menueopen = true;
       map[x + y * sizex] = solar;
