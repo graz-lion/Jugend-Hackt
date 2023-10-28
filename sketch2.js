@@ -1,31 +1,39 @@
 let sizex = 24;
-let sizey = 18;
+let sizey = 17;
 let tilesize = 40;
 let map = [];
 let Solar;
 let Select;
 let Wiese;
+let menueopen = false;
+let wiese;
+let solar;
 
 function setup() {
-  createCanvas(sizex * tilesize, sizey * tilesize);
+  createCanvas(sizex * tilesize, sizey * tilesize + 40);
+  fill(200);
+  textSize(20);
+  textAlign(LEFT, CENTER);
 
-  Solar = loadImage("Solar.png");
+  wiese = new map_tile("Wiese", loadImage("Wiese.png"));
+  solar = new map_tile("Solarkraftwerk", loadImage("Solar.png"));
+  
+
   Select = loadImage("Select.png");
-  Wiese = loadImage("Wiese.png");
 
   map = new Array();
 
   for (let y = 0; y < sizey; y++) {
     for (let x = 0; x < sizex; x++) {
-      map.push(new map_tile(Wiese));
+      map.push(wiese);
     }
   }
 }
 
 function draw() {
+  background(50);
   for (let y = 0; y < sizey; y++) {
     for (let x = 0; x < sizex; x++) {
-      //rect(x * tilesize, y * tilesize, tilesize, tilesize);
       image(
         map[x + y * sizex].image,
         x * tilesize,
@@ -35,20 +43,31 @@ function draw() {
       );
     }
   }
-
-  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+if (menueopen === false) {
+  if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height - 40) {
     x = parseInt(mouseX / tilesize);
     y = parseInt(mouseY / tilesize);
     image(Select, x * tilesize, y * tilesize, tilesize, tilesize);
     if (mouseIsPressed) {
-      map[x + y * sizex].image = Solar;
+    menueopen = true;
+      map[x + y * sizex] = solar;
     }
+  }
+  } else {
+  	text('hi, welcome to the menu (x) to exit', 10, sizey * tilesize + 20);
   }
 }
 
 class map_tile {
-  constructor(image) {
+  constructor(name, image) {
+    this.name = name;
     this.image = image;
-  }
+    }
 }
 
+function keyPressed() {
+console.log(keyCode);
+  if (keyCode === 88) {
+    menueopen = false;
+    }
+}
