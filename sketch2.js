@@ -94,6 +94,8 @@ function keyPressed() {
     menueopen = false;
   } else if (keyCode === 37) {
    selectedMenue++;
+  } else if (keyCode === 39) {
+  selectedMenue--;
   }
 }
 
