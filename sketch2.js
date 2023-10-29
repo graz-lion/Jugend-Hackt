@@ -71,14 +71,24 @@ function draw() {
     }
   } else {
   let menueOptionsText = "";
+  if (selectedMenue < 0) {
+  	selectedMenue = map[xtile + ytile * sizex].menueOptions.length;
+  }
+  selectedMenue = selectedMenue % map[xtile + ytile * sizex].menueOptions.length;
+  
   for (let i = 0; i < map[xtile + ytile * sizex].menueOptions.length; i++) {
+  	if (i === selectedMenue) {
+  	  menueOptionsText = menueOptionsText + "[x]";
+  	} else {
+  	  menueOptionsText = menueOptionsText + "[ ]";
+  	}
     menueOptionsText = menueOptionsText + " " + map[xtile + ytile * sizex].menueOptions[i].text; 	
   }
     text(menueOptionsText, 10, sizey * tilesize + 20);
   }
   image(Select, xtile * tilesize, ytile * tilesize, tilesize, tilesize);
 
-    console.log(keyCode);
+    console.log(selectedMenue);
 }
 
 class map_tile {
@@ -93,9 +103,9 @@ function keyPressed() {
   if (keyCode === 88) {
     menueopen = false;
   } else if (keyCode === 37) {
-   selectedMenue++;
+    selectedMenue++;
   } else if (keyCode === 39) {
-  selectedMenue--;
+    selectedMenue--;
   }
 }
 
