@@ -6,6 +6,7 @@ let Solar;
 let Select;
 let Wiese;
 let menueopen = false;
+let selectedMenue = 0;
 let wiese;
 let solar;
 let wald;
@@ -17,7 +18,7 @@ function setup() {
   textSize(20);
   textAlign(LEFT, CENTER);
 
-  wiese = new map_tile("Wiese", loadImage("Wiese.png"), new Array(new menueOption("Baue Solarkraftwerk.", solar)));
+  wiese = new map_tile("Wiese", loadImage("Wiese.png"), new Array(new menueOption("Baue Solarkraftwerk.", solar), new menueOption("Pflanze Wald.", wald)));
   solar = new map_tile("Solarkraftwerk", loadImage("Solar.png"));
   wald = new map_tile("Wald", loadImage("Wald.png"), new Array(new menueOption("Zerstöre Wald.", wiese)));
   wasser = new map_tile("Wasser", loadImage("Wasser.png"));
@@ -69,13 +70,15 @@ function draw() {
       text(map[xtile + ytile * sizex].name, 10, sizey * tilesize + 20);
     }
   } else {
-  let menueOptionsText;
+  let menueOptionsText = "";
   for (let i = 0; i < map[xtile + ytile * sizex].menueOptions.length; i++) {
-    menueOptionsText = menueOptionsText + " " * map[xtile + ytile * sizex].menueOptions[i]; 	
+    menueOptionsText = menueOptionsText + " " + map[xtile + ytile * sizex].menueOptions[i].text; 	
   }
     text(menueOptionsText, 10, sizey * tilesize + 20);
   }
   image(Select, xtile * tilesize, ytile * tilesize, tilesize, tilesize);
+
+    console.log(keyCode);
 }
 
 class map_tile {
@@ -89,6 +92,8 @@ class map_tile {
 function keyPressed() {
   if (keyCode === 88) {
     menueopen = false;
+  } else if (keyCode === 37) {
+   selectedMenue++;
   }
 }
 
