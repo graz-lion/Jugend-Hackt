@@ -17,9 +17,9 @@ function setup() {
   textSize(20);
   textAlign(LEFT, CENTER);
 
-  wiese = new map_tile("Wiese", loadImage("Wiese.png"));
+  wiese = new map_tile("Wiese", loadImage("Wiese.png"), new Array(new menueOption("Baue Solarkraftwerk.", solar)));
   solar = new map_tile("Solarkraftwerk", loadImage("Solar.png"));
-  wald = new map_tile("Wald", loadImage("Wald.png"));
+  wald = new map_tile("Wald", loadImage("Wald.png"), new Array(new menueOption("Zerstöre Wald.", wiese)));
   wasser = new map_tile("Wasser", loadImage("Wasser.png"));
 
   Select = loadImage("Select.png");
@@ -38,12 +38,15 @@ function setup() {
   }
   for (let y = 0; y < sizey; y++) {
     for (let x = 0; x < sizex; x++) {
-      if (noise(x * noiseScale + 100, y * noiseScale) > 0.6) {
+      if (noise(x * noiseScale + 1, y * noiseScale) > 0.6) {
         map[x + y * sizex] = wasser;
       }
     }
   }
 }
+
+let xtile;
+let ytile;
 
 function draw() {
   background(50);
@@ -58,34 +61,44 @@ function draw() {
       );
     }
   }
+  
   if (menueopen === false) {
     if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height - 40) {
-      x = parseInt(mouseX / tilesize);
-      y = parseInt(mouseY / tilesize);
-      image(Select, x * tilesize, y * tilesize, tilesize, tilesize);
-      text(map[x + y * sizex].name, 10, sizey * tilesize + 20);
-
-      if (mouseIsPressed) {
-        menueopen = true;
-        map[x + y * sizex] = solar;
-      }
+      xtile = parseInt(mouseX / tilesize);
+      ytile = parseInt(mouseY / tilesize);
+      text(map[xtile + ytile * sizex].name, 10, sizey * tilesize + 20);
     }
   } else {
-    text("hi, welcome to the menu (x) to exit", 10, sizey * tilesize + 20);
+  let menueOptionsText;
+  for (let i = 0; i < map[xtile + ytile * sizex].menueOptions.length; i++) {
+    menueOptionsText = menueOptionsText + " " * map[xtile + ytile * sizex].menueOptions[i]; 	
   }
+    text(menueOptionsText, 10, sizey * tilesize + 20);
+  }
+  image(Select, xtile * tilesize, ytile * tilesize, tilesize, tilesize);
 }
 
 class map_tile {
-  constructor(name, image) {
+  constructor(name, image, menueOptions) {
     this.name = name;
     this.image = image;
+    this.menueOptions = menueOptions;
   }
 }
 
 function keyPressed() {
-  console.log(keyCode);
   if (keyCode === 88) {
     menueopen = false;
   }
 }
 
+function mouseClicked() {
+  menueopen = true;
+}
+
+class menueOption {
+  constructor(text, newTile) {
+  	this.text = text;
+  	this.newTile = newTile;
+  }
+}
