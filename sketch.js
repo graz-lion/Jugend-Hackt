@@ -3,9 +3,10 @@ let wueste
 let waldUpscaled
 let wald
 let geradeSchiene
-var Hintergrund = false
+let Hintergrund = false
 let solarkraftwerk
-let tileSize = window.innerWidth/20
+let tileSize = 80
+let tileArray = []
 
 function preload() {
   wiese = loadImage("klimathon-wiese-upscale.png");
@@ -20,16 +21,17 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   for(imgY=0; imgY<window.innerHeight; imgY+=tileSize) {
     for(imgX=0; imgX<window.innerWidth; imgX+=tileSize) {
-      image(wiese, imgX, imgY, tileSize, tileSize);
+      tileArray.push(wiese)
     }
   }
+  console.log(tileArray)
 }
 
-
 function draw() {
-  if(Hintergrund == false){
-    
-    Hintergrund = true
+  for(imgY=0; imgY<window.innerHeight; imgY+=tileSize) {
+    for(imgX=0; imgX<window.innerWidth; imgX+=tileSize) {
+      image(tileArray[imgX/80+imgY], imgX, imgY, tileSize, tileSize);
+    }
   }
   //image(wald, mouseX-10, mouseY-10)
   if(mouseIsPressed) {
